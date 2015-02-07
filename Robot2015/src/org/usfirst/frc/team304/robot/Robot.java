@@ -1,6 +1,7 @@
 package org.usfirst.frc.team304.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 //import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Joystick;
@@ -42,7 +43,8 @@ public class Robot extends IterativeRobot {
     							 leftRearVictor,
     							 rightFrontVictor,
     							 rightRearVictor);
-    	
+    	this.myRobot.setInvertedMotor(MotorType.kFrontRight, true);
+    	this.myRobot.setInvertedMotor(MotorType.kRearRight, true);
     	liftVictor = new Victor(2);
     	liftVictor = new Victor (4);
     	//bannerSensor = new AnalogInput(6);
@@ -81,7 +83,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	double magnitude = stick.getMagnitude();
     	double direction = stick.getDirectionDegrees();
-    	double rotation = stick.getRawAxis(2);
+    	double rotation =  stick.getRawAxis(2);
 		myRobot.mecanumDrive_Polar(magnitude, direction, rotation);
 		SmartDashboard.putString("DB/String 0", "magnitude: "+magnitude);
 		SmartDashboard.putString("DB/String 1", "direction: "+direction);
@@ -89,7 +91,17 @@ public class Robot extends IterativeRobot {
 		
 		double speedUp = SmartDashboard.getNumber("DB/Slider 0") / 5;
 		double speedDown = SmartDashboard.getNumber("DB/Slider 1") / 5;
+		double speedz = (stick.getTrigger()) ? .25d : 0;
 		
+		double leftFrontInversion = Double.parseDouble(SmartDashboard.getString("DB/String 3", "1" ));
+		double leftRearInversion = Double.parseDouble(SmartDashboard.getString("DB/String 4", "1"));
+		double rightFrontInversion = Double.parseDouble(SmartDashboard.getString("DB/String 8", "1"));
+		double rightRearInversion = Double.parseDouble(SmartDashboard.getString("DB/String 9", "1"));
+		
+		/*leftFrontVictor.set(leftFrontInversion*speedz);
+		leftRearVictor.set(leftRearInversion*speedz);
+		rightFrontVictor.set(rightFrontInversion*-speedz);
+		rightRearVictor.set(rightRearInversion*-speedz);*/
 		
 		//lifting
 		if(stick.getRawButton(5)) {
@@ -110,6 +122,12 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
     	LiveWindow.run();
+    	double magnitude = stick.getMagnitude();
+    	double direction = stick.getDirectionDegrees();
+    	double rotation = stick.getRawAxis(2);
+		SmartDashboard.putString("DB/String 0", "m: "+magnitude);
+		SmartDashboard.putString("DB/String 1", "d: "+direction);
+		SmartDashboard.putString("DB/String 2", "r: "+rotation);
     }
     
 }
