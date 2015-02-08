@@ -43,6 +43,7 @@ public class Robot extends IterativeRobot {
     							 leftRearVictor,
     							 rightFrontVictor,
     							 rightRearVictor);
+    	// it doesn't know which motors are inverted; we have to tell it!
     	this.myRobot.setInvertedMotor(MotorType.kFrontRight, true);
     	this.myRobot.setInvertedMotor(MotorType.kRearRight, true);
     	liftVictor = new Victor(2);
