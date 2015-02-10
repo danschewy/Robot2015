@@ -85,19 +85,19 @@ public class Robot extends IterativeRobot {
     	double magnitude = stick.getMagnitude();
     	double direction = stick.getDirectionDegrees();
     	double rotation =  stick.getRawAxis(2);
-		myRobot.mecanumDrive_Polar(magnitude, direction, rotation);
-		SmartDashboard.putString("DB/String 0", "magnitude: "+magnitude);
-		SmartDashboard.putString("DB/String 1", "direction: "+direction);
-		SmartDashboard.putString("DB/String 2", "rotation: "+rotation);
+		myRobot.mecanumDrive_Polar(Math.pow(magnitude, 2), direction, Math.pow(rotation, 2));
+		SmartDashboard.putString("DB/String 0", "m:"+magnitude);
+		SmartDashboard.putString("DB/String 1", "d:"+direction);
+		SmartDashboard.putString("DB/String 2", "r:"+rotation);
 		
 		double speedUp = SmartDashboard.getNumber("DB/Slider 0") / 5;
 		double speedDown = SmartDashboard.getNumber("DB/Slider 1") / 5;
-		double speedz = (stick.getTrigger()) ? .25d : 0;
+		//double speedz = (stick.getTrigger()) ? .25d : 0;
 		
-		double leftFrontInversion = Double.parseDouble(SmartDashboard.getString("DB/String 3", "1" ));
-		double leftRearInversion = Double.parseDouble(SmartDashboard.getString("DB/String 4", "1"));
-		double rightFrontInversion = Double.parseDouble(SmartDashboard.getString("DB/String 8", "1"));
-		double rightRearInversion = Double.parseDouble(SmartDashboard.getString("DB/String 9", "1"));
+        SmartDashboard.putString("DB/String 3", "" + leftFrontVictor.get());
+        SmartDashboard.putString("DB/String 4", "" + leftRearVictor.get());
+        SmartDashboard.putString("DB/String 8", "" + rightFrontVictor.get());
+        SmartDashboard.putString("DB/String 9", "" + rightRearVictor.get());
 		
 		/*leftFrontVictor.set(leftFrontInversion*speedz);
 		leftRearVictor.set(leftRearInversion*speedz);
