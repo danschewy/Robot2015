@@ -89,6 +89,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("DB/String 0", "m:"+magnitude);
 		SmartDashboard.putString("DB/String 1", "d:"+direction);
 		SmartDashboard.putString("DB/String 2", "r:"+rotation);
+		//good
 		
 		double speedUp = SmartDashboard.getNumber("DB/Slider 0") / 5;
 		double speedDown = SmartDashboard.getNumber("DB/Slider 1") / 5;
