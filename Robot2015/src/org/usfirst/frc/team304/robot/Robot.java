@@ -44,8 +44,8 @@ public class Robot extends IterativeRobot {
     							 rightFrontVictor,
     							 rightRearVictor);
     	// it doesn't know which motors are inverted; we have to tell it!
-    	this.myRobot.setInvertedMotor(MotorType.kFrontRight, true);
-    	this.myRobot.setInvertedMotor(MotorType.kRearRight, true);
+    	this.myRobot.setInvertedMotor(MotorType.kFrontLeft, true);
+    	this.myRobot.setInvertedMotor(MotorType.kRearLeft, true);
     	liftVictor = new Victor(2);
     	liftVictor = new Victor (4);
     	//bannerSensor = new AnalogInput(6);
@@ -85,7 +85,7 @@ public class Robot extends IterativeRobot {
     	double magnitude = stick.getMagnitude();
     	double direction = stick.getDirectionDegrees();
     	double rotation =  stick.getRawAxis(2);
-		myRobot.mecanumDrive_Polar(Math.pow(magnitude, 2), direction, Math.pow(rotation, 2));
+		myRobot.mecanumDrive_Polar(Math.pow(magnitude, 2), direction, Math.pow(rotation, 3));
 		SmartDashboard.putString("DB/String 0", "m:"+magnitude);
 		SmartDashboard.putString("DB/String 1", "d:"+direction);
 		SmartDashboard.putString("DB/String 2", "r:"+rotation);
@@ -127,9 +127,13 @@ public class Robot extends IterativeRobot {
     	double magnitude = stick.getMagnitude();
     	double direction = stick.getDirectionDegrees();
     	double rotation = stick.getRawAxis(2);
-		SmartDashboard.putString("DB/String 0", "m: "+magnitude);
+		/*SmartDashboard.putString("DB/String 0", "m: "+magnitude);
 		SmartDashboard.putString("DB/String 1", "d: "+direction);
-		SmartDashboard.putString("DB/String 2", "r: "+rotation);
+		SmartDashboard.putString("DB/String 2", "r: "+rotation);*/
+		for (int x=0; x<6; x++){
+			double stixk = stick.getRawAxis(x);
+			SmartDashboard.putString("DB/String "+x, ""+stixk);
+		}
     }
     
 }
