@@ -48,6 +48,7 @@ public class RobotAI {
 				"SwitchLeft: " + sense.getSwitchLeftInValue());
 	}
 
+	// comment to make it commit...
 	public void autoPark() {
 		if (!sense.seesLifter()) {
 			lifter.liftUp();
