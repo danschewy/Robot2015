@@ -24,9 +24,12 @@ public class RobotAI {
 	}
 
 	public void printDebug() {
-		SmartDashboard.putString("DB/String 0", "m: " + sense.getMagnitude());
-		SmartDashboard.putString("DB/String 1", "d: " + sense.getDirection());
-		SmartDashboard.putString("DB/String 2", "r: " + sense.getRotation());
+		SmartDashboard.putString("DB/String 0",
+				"PhotoL: " + sense.getPhotoLeftInValue());
+		SmartDashboard.putString("DB/String 1",
+				"PhotoR: " + sense.getPhotoRightInValue());
+		SmartDashboard.putString("DB/String 2",
+				"Lifter: " + sense.getLifterSensorValue());
 
 		SmartDashboard.putString("DB/String 3", "lf: "
 				+ base.getLeftFrontVictor().get());
@@ -37,45 +40,54 @@ public class RobotAI {
 		SmartDashboard.putString("DB/String 9", "rr: "
 				+ base.getRightRearVictor().get());
 
-		SmartDashboard.putString("DB/String 5", "Photo: "
-				+ sense.getPhotoIn().get());
-		SmartDashboard.putString("DB/String 6", "SwitchRight: "
-				+ sense.getSwitchRightIn().get());
-		SmartDashboard.putString("DB/String 7", "SwitchLeft: "
-				+ sense.getSwitchLeftIn().get());
+		SmartDashboard.putString("DB/String 5",
+				"Photo: " + sense.getPhotoInValue());
+		SmartDashboard.putString("DB/String 6",
+				"SwitchRight: " + sense.getSwitchRightInValue());
+		SmartDashboard.putString("DB/String 7",
+				"SwitchLeft: " + sense.getSwitchLeftInValue());
 	}
 
 	public void autoPark() {
-		if (!sense.isBoxVisible()) {
-			base.driveForwardSlowly();
+		if (!sense.seesLifter()) {
+			lifter.liftUp();
+			keepHeightMarker = false;
 		} else {
-			base.stop();
-			
-			if (sense.sideSensorsNotSee()) {
-				if (sense.areBothSensorsTouched()) {
-					// lifting
-				} else if (sense.isLeftSensorTouched()) {
-					base.rotateRightSlowly();
-				} else if (sense.isRightSensorTouched()) {
-					base.rotateLeftSlowly();
-				} else {
-					base.driveForwardSlowly();
-				}
+			keepHeightMarker = true;
+			lifter.keepSameHeight();
+
+			if (!sense.isBoxVisible()) {
+				base.driveForwardSlowly();
 			} else {
-				if(sense.leftSideSees()) {
-					base.driveSlowlyLeft();
-				} else if (sense.rightSideSees()) {
-					base.driveSlowlyRight();
+				base.stop();
+
+				if (sense.sideSensorsNotSee()) {
+					if (sense.areBothSensorsTouched()) {
+						// lifting
+					} else if (sense.isLeftSensorTouched()) {
+						base.rotateRightSlowly();
+					} else if (sense.isRightSensorTouched()) {
+						base.rotateLeftSlowly();
+					} else {
+						base.driveForwardSlowly();
+					}
+				} else { // if both sensors see it we approach
+					if (sense.leftSideSees()) {
+						base.driveSlowlyLeft();
+					} else if (sense.rightSideSees()) {
+						base.driveSlowlyRight();
+					}
 				}
 			}
 		}
 	}
 
 	public void lift() {
-		if (sense.isKeepHeightPressed()) {	//and if up or down pressed - interrupt
-			keepHeightMarker = true;
+		if (sense.isKeepHeightPressed()) { // and if up or down pressed -
+											// interrupt
+			keepHeightMarker = (keepHeightMarker) ? false : true;
 		}
-		
+
 		if (sense.isLiftingUpPressed()) {
 			keepHeightMarker = false;
 			lifter.liftUp();
@@ -83,7 +95,7 @@ public class RobotAI {
 			keepHeightMarker = false;
 			lifter.liftDown();
 		} else if (keepHeightMarker) {
-			lifter.keepSameHeight();	// add encoders, if box moves down -
+			lifter.keepSameHeight(); // add encoders, if box moves down -
 										// move it up
 		} else {
 			lifter.stop();

@@ -5,18 +5,36 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class SensorSystem {
 	private DigitalInput photoIn, photoLeftIn, photoRightIn, switchLeftIn,
-			switchRightIn;
+			switchRightIn, lifterSensor;
+
+	private Joystick controller;
 
 	public DigitalInput getPhotoIn() {
 		return photoIn;
 	}
-	
+
+	public boolean getPhotoInValue() {
+		return !photoIn.get();
+	}
+
 	public DigitalInput getSwitchLeftIn() {
 		return switchLeftIn;
 	}
 
+	public boolean getSwitchLeftInValue() {
+		return !switchLeftIn.get();
+	}
+
 	public DigitalInput getSwitchRightIn() {
 		return switchRightIn;
+	}
+
+	public boolean getSwitchRightInValue() {
+		return !switchRightIn.get();
+	}
+
+	public boolean getPhotoLeftInValue() {
+		return !photoLeftIn.get();
 	}
 
 	public DigitalInput getPhotoLeftIn() {
@@ -27,20 +45,32 @@ public class SensorSystem {
 		return photoRightIn;
 	}
 
+	public boolean getPhotoRightInValue() {
+		return !photoRightIn.get();
+	}
+
+	public DigitalInput getLifterSensor() {
+		return lifterSensor;
+	}
+
+	public boolean getLifterSensorValue() {
+		return !lifterSensor.get();
+	}
+
 	public Joystick getController() {
 		return controller;
 	}
 
-	private Joystick controller;
-
 	public SensorSystem(DigitalInput photoIn, DigitalInput photoLeftIn,
 			DigitalInput photoRightIn, DigitalInput switchLeftIn,
-			DigitalInput switchRightIn, Joystick controller) {
+			DigitalInput switchRightIn, DigitalInput lifterSensor,
+			Joystick controller) {
 		this.photoIn = photoIn;
 		this.photoLeftIn = photoLeftIn;
 		this.photoRightIn = photoRightIn;
 		this.switchRightIn = switchRightIn;
 		this.switchLeftIn = switchLeftIn;
+		this.lifterSensor = lifterSensor;
 		this.controller = controller;
 	}
 
@@ -59,15 +89,15 @@ public class SensorSystem {
 	public boolean isBoxVisible() {
 		return !photoIn.get();
 	}
-	
+
 	public boolean leftSideSees() {
 		return !photoLeftIn.get();
 	}
-	
+
 	public boolean rightSideSees() {
 		return !photoRightIn.get();
 	}
-	
+
 	public boolean sideSensorsNotSee() {
 		return !leftSideSees() && !rightSideSees();
 	}
@@ -85,11 +115,11 @@ public class SensorSystem {
 	}
 
 	public boolean isForwardPressed() {
-		return controller.getRawButton(1);
+		return controller.getRawButton(4);
 	}
 
 	public boolean isBackwardPressed() {
-		return controller.getRawButton(4);
+		return controller.getRawButton(1);
 	}
 
 	public boolean isLeftPressed() {
@@ -98,6 +128,10 @@ public class SensorSystem {
 
 	public boolean isRightPressed() {
 		return controller.getRawButton(2);
+	}
+
+	public boolean seesLifter() {
+		return !lifterSensor.get();
 	}
 
 	public double getMagnitude() {

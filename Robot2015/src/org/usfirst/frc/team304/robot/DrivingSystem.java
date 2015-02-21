@@ -8,9 +8,9 @@ public class DrivingSystem {
 	private Victor leftFrontVictor, leftRearVictor, rightFrontVictor,
 			rightRearVictor;
 
-	private final static double DRIVE_SLOWLY = 0.15;
-	private final static double ROTATE_SLOWLY = 0.23;
-	private final static double DRIVE_NORMAL = 0.5;
+	private final static double DRIVE_SLOWLY = 0.23;
+	private final static double ROTATE_SLOWLY = 0.3;
+	private final static double DRIVE_NORMAL = 0.6;
 
 	public Victor getLeftFrontVictor() {
 		return leftFrontVictor;
@@ -86,19 +86,19 @@ public class DrivingSystem {
 	}
 
 	public void driveLeft() {
-		driveSet(DRIVE_NORMAL, -DRIVE_NORMAL, DRIVE_NORMAL, -DRIVE_NORMAL);
+		driveSet(-DRIVE_NORMAL, DRIVE_NORMAL, -DRIVE_NORMAL, DRIVE_NORMAL);
 	}
 
 	public void driveRight() {
-		driveSet(-DRIVE_NORMAL, DRIVE_NORMAL, -DRIVE_NORMAL, DRIVE_NORMAL);
+		driveSet(DRIVE_NORMAL, -DRIVE_NORMAL, DRIVE_NORMAL, -DRIVE_NORMAL);
 	}
-	
+
 	public void driveSlowlyLeft() {
-		driveSet(DRIVE_SLOWLY, -DRIVE_SLOWLY, DRIVE_SLOWLY, -DRIVE_SLOWLY);
+		driveSet(-DRIVE_SLOWLY, DRIVE_SLOWLY, -DRIVE_SLOWLY, DRIVE_SLOWLY);
 	}
 
 	public void driveSlowlyRight() {
-		driveSet(-DRIVE_SLOWLY, DRIVE_SLOWLY, -DRIVE_SLOWLY, DRIVE_SLOWLY);
+		driveSet(DRIVE_SLOWLY, -DRIVE_SLOWLY, DRIVE_SLOWLY, -DRIVE_SLOWLY);
 	}
 
 	public void driveDirectly(double magnitude, double direction,

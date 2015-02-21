@@ -33,9 +33,9 @@ public class Robot extends IterativeRobot {
 
 		sense = new SensorSystem(new DigitalInput(5), new DigitalInput(1),
 				new DigitalInput(9), new DigitalInput(3), new DigitalInput(7),
-				controller);
+				new DigitalInput(0), controller);
 
-		tester = new PeriodicTester(controller);
+		tester = new PeriodicTester(sense);
 		driver = new RobotAI(sense, base, lifter);
 	}
 
