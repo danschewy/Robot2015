@@ -86,12 +86,16 @@ public class RobotAI {
 	public void lift() {
 		if (sense.isKeepHeightPressed()) { // and if up or down pressed -
 											// interrupt
-			keepHeightMarker = (keepHeightMarker) ? false : true;
+			keepHeightMarker = true;
 		}
 
 		if (sense.isLiftingUpPressed()) {
-			keepHeightMarker = false;
-			lifter.liftUp();
+			if (!sense.getLifterSensorValue()) {
+				keepHeightMarker = false;
+				lifter.liftUp();
+			} else {
+				lifter.stop();
+			}
 		} else if (sense.isLiftingDownPressed()) {
 			keepHeightMarker = false;
 			lifter.liftDown();

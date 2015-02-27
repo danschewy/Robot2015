@@ -7,9 +7,13 @@ public class LiftingSystem {
 	private Victor leftVictor;
 	private Victor rightVictor;
 
-	private static double KEEP_HEIGHT = 0.1;
-	private static double LIFT_DEFAULT = 0.5;
+	private final static double LIFT_DEFAULT = 0.5;
 
+	
+	public double getKeepHeight() {
+		return SmartDashboard.getNumber("DB/Slider 2") / 5;
+	}
+	
 	public Victor getLeftVictor() {
 		return leftVictor;
 	}
@@ -24,6 +28,7 @@ public class LiftingSystem {
 	}
 
 	public void liftUp() {
+		
 		leftVictor.set(getSpeedUp());
 		rightVictor.set(getSpeedUp());
 	}
@@ -34,8 +39,8 @@ public class LiftingSystem {
 	}
 
 	public void keepSameHeight() {
-		leftVictor.set(KEEP_HEIGHT);
-		rightVictor.set(KEEP_HEIGHT);
+		leftVictor.set(getKeepHeight());
+		rightVictor.set(getKeepHeight());
 	}
 
 	private double getSpeedUp() {
