@@ -1,6 +1,7 @@
 package org.usfirst.frc.team304.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 
 public class RobotAI {
 	private SensorSystem sense;
@@ -8,11 +9,14 @@ public class RobotAI {
 	private LiftingSystem lifter;
 
 	private boolean keepHeightMarker = false;
+	private Timer timer;
 
-	public RobotAI(SensorSystem sense, DrivingSystem base, LiftingSystem lifter) {
+	public RobotAI(SensorSystem sense, DrivingSystem base,
+			LiftingSystem lifter, Timer timer) {
 		this.sense = sense;
 		this.base = base;
 		this.lifter = lifter;
+		this.timer = timer;
 	}
 
 	public void go() {
@@ -23,13 +27,67 @@ public class RobotAI {
 		drive();
 	}
 
+	public void goAutonomousImproved() {
+		if (timer.get() < 1d) {
+			lifter.liftUp();
+		} else if (timer.get() < 1.5d) {
+			base.driveForwardSlowly();
+			lifter.liftUp();
+		} else if (timer.get() < 5.5d) {
+			lifter.liftUp();
+			base.driveRight();
+		} else if (timer.get() < 7d) {
+			base.rotateLeft();
+			lifter.liftUp();
+		} else if (timer.get() < 10.5d) {
+			base.stop();
+			lifter.liftDown();
+		} else if (timer.get() < 11d) {
+			base.driveBackwardSlowly();
+			lifter.stop();
+		} else {
+			base.stop();
+		}
+	}
+
+	public void goAutonomousTrashCan() {
+		if (timer.get() < 2d) {
+			lifter.liftUp();
+		} else if (timer.get() < 2.5d) {
+			base.driveForwardSlowly();
+			lifter.liftUp();
+		} else if (timer.get() < 6.5d) {
+			lifter.liftUp();
+			base.driveRight();
+		} else if (timer.get() < 8d) {
+			base.rotateLeft();
+			lifter.liftUp();
+		} else if (timer.get() < 11.5d) {
+			base.stop();
+			lifter.liftDown();
+		} else if (timer.get() < 12d) {
+			base.driveBackwardSlowly();
+			lifter.stop();
+		} else {
+			base.stop();
+		}
+	}
+
+	public void goAutonomousBasic() {
+		if (timer.get() < 3d) {
+			base.driveBackwardSlowly();
+		} else {
+			base.stop();
+		}
+	}
+
 	public void printDebug() {
 		SmartDashboard.putString("DB/String 0",
-				"PhotoL: " + sense.getPhotoLeftInValue());
+				"X: " + sense.getXAcceleration());
 		SmartDashboard.putString("DB/String 1",
-				"PhotoR: " + sense.getPhotoRightInValue());
+				"Y: " + sense.getYAcceleration());
 		SmartDashboard.putString("DB/String 2",
-				"Lifter: " + sense.getLifterSensorValue());
+				"Z: " + sense.getZAcceleration());
 
 		SmartDashboard.putString("DB/String 3", "lf: "
 				+ base.getLeftFrontVictor().get());
@@ -55,7 +113,6 @@ public class RobotAI {
 			keepHeightMarker = false;
 		} else {
 			keepHeightMarker = true;
-			lifter.keepSameHeight();
 
 			if (!sense.isBoxVisible()) {
 				base.driveForwardSlowly();
@@ -72,7 +129,7 @@ public class RobotAI {
 					} else {
 						base.driveForwardSlowly();
 					}
-				} else { // if both sensors see it we approach
+				} else {
 					if (sense.leftSideSees()) {
 						base.driveSlowlyLeft();
 					} else if (sense.rightSideSees()) {

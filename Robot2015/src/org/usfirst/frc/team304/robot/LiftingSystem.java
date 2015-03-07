@@ -11,7 +11,8 @@ public class LiftingSystem {
 
 	
 	public double getKeepHeight() {
-		return SmartDashboard.getNumber("DB/Slider 2") / 5;
+		double speed = SmartDashboard.getNumber("DB/Slider 2") / 5;
+		return (speed == 0) ? speed : .15;
 	}
 	
 	public Victor getLeftVictor() {

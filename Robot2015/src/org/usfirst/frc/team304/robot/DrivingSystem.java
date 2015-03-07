@@ -10,6 +10,7 @@ public class DrivingSystem {
 
 	private final static double DRIVE_SLOWLY = 0.23;
 	private final static double ROTATE_SLOWLY = 0.3;
+	private final static double ROTATE = 0.5;
 	private final static double DRIVE_NORMAL = 0.6;
 
 	public Victor getLeftFrontVictor() {
@@ -71,6 +72,9 @@ public class DrivingSystem {
 
 	public void rotateLeftSlowly() {
 		driveSet(ROTATE_SLOWLY, ROTATE_SLOWLY, 0, 0);
+	}
+	public void rotateLeft() {
+		driveSet(0, 0, -ROTATE, -ROTATE);
 	}
 
 	public void driveForward() {
