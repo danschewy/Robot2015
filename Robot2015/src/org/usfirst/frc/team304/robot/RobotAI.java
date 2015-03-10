@@ -1,15 +1,18 @@
 package org.usfirst.frc.team304.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.AnalogAccelerometer;
 import edu.wpi.first.wpilibj.Timer;
 
 public class RobotAI {
 	private SensorSystem sense;
 	private DrivingSystem base;
 	private LiftingSystem lifter;
+	private AnalogAccelerometer accel; // inside computer??? O_o
 
 	private boolean keepHeightMarker = false;
 	private Timer timer;
+	double l = 0d;
 
 	public RobotAI(SensorSystem sense, DrivingSystem base,
 			LiftingSystem lifter, Timer timer) {
@@ -17,9 +20,19 @@ public class RobotAI {
 		this.base = base;
 		this.lifter = lifter;
 		this.timer = timer;
+		
+		accel = new AnalogAccelerometer(0); //create accelerometer on analog input 0
+		accel.setSensitivity(.018); // Set sensitivity to 18mV/g (ADXL193)
+		accel.setZero(2.5); //Set zero to 2.5V (actual value should be determined experimentally)
 	}
 
 	public void go() {
+		double t = timer.get();
+
+		l = +sense.getYAcceleration() * t * t / 2d;
+
+		timer.reset();
+		timer.start();
 		printDebug();
 
 		lift();
@@ -74,7 +87,15 @@ public class RobotAI {
 	}
 
 	public void goAutonomousBasic() {
-		if (timer.get() < 3d) {
+		if (timer.get() < 2d) {
+			lifter.liftUp();
+		} else if (timer.get() < 4.5d) {
+			lifter.liftUp();
+			base.driveBackwardSlowly();
+		} else if (timer.get() < 7d) {
+			lifter.liftDown();
+			base.stop();
+		} else if (timer.get() < 8d) {
 			base.driveBackwardSlowly();
 		} else {
 			base.stop();
@@ -89,17 +110,10 @@ public class RobotAI {
 		SmartDashboard.putString("DB/String 2",
 				"Z: " + sense.getZAcceleration());
 
-		SmartDashboard.putString("DB/String 3", "lf: "
-				+ base.getLeftFrontVictor().get());
-		SmartDashboard.putString("DB/String 4", "lr: "
-				+ base.getLeftRearVictor().get());
-		SmartDashboard.putString("DB/String 8", "rf: "
-				+ base.getRightFrontVictor().get());
-		SmartDashboard.putString("DB/String 9", "rr: "
-				+ base.getRightRearVictor().get());
+		SmartDashboard.putString("DB/String 3", "l: " + l);
 
 		SmartDashboard.putString("DB/String 5",
-				"Photo: " + sense.getPhotoInValue());
+				"Accel: " + accel.getAcceleration());
 		SmartDashboard.putString("DB/String 6",
 				"SwitchRight: " + sense.getSwitchRightInValue());
 		SmartDashboard.putString("DB/String 7",
